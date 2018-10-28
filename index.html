@@ -24,22 +24,127 @@
 
     </header>
     <main id="main-doc">
-      <section class="main-section">
-        <header>Basic Syntax</header>
+      <section class="main-section" id="User-defined_Functions">
+        <header>User-defined Functions</header>
+        <p>A function may be defined using syntax such as the following: </p>
+
+        <p><strong>Example #1 Pseudo code to demonstrate function uses</strong>
+          <pre>
+            <code>
+              &lt;?php
+              function foo($arg_1, $arg_2, /* ..., */ $arg_n)
+              {
+                  echo "Example function.\n";
+                  return $retval;
+              }
+              ?&gt;
+          </code>
+        </pre>
+      <p>Any valid PHP code may appear inside a function, even other functions and class definitions.</p>
+
+      <p>Function names follow the same rules as other labels in PHP. A valid function name starts with a letter or underscore, followed by any number of letters, numbers, or underscores. As a regular expression, it would be expressed thus: [a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*.</p>
+
+      <p><strong>Tip</strong></p>
+      <p>See also the Userland Naming Guide.</p>
+
+      <p>Functions need not be defined before they are referenced, except when a function is conditionally defined as shown in the two examples below.</p>
+
+      <p>When a function is defined in a conditional manner such as the two examples shown. Its definition must be processed prior to being called.</p>
+
+      <p><strong>Example #2 Conditional functions</strong></p>
+      <code>
+        <?php
+
+        $makefoo = true;
+
+        /* We can't call foo() from here 
+          since it doesn't exist yet,
+          but we can call bar() */
+
+        bar();
+
+        if ($makefoo) {
+          function foo()
+          {
+            echo "I don't exist until program execution reaches me.\n";
+          }
+        }
+
+        /* Now we can safely call foo()
+          since $makefoo evaluated to true */
+
+        if ($makefoo) foo();
+
+        function bar() 
+        {
+          echo "I exist immediately upon program start.\n";
+        }
+
+        ?>
+      </code>
+      <p><strong>Example #3 Functions within functions</strong></p>
+      <code>
+
+        <?php
+        function foo() 
+        {
+          function bar() 
+          {
+            echo "I don't exist until foo() is called.\n";
+          }
+        }
+
+        /* We can't call bar() yet
+          since it doesn't exist. */
+
+        foo();
+
+        /* Now we can call bar(),
+          foo()'s processing has
+          made it accessible. */
+
+        bar();
+
+        ?>
+      </code>
+      <p>All functions and classes in PHP have the global scope - they can be called outside a function even if they were defined inside and vice versa.</p>
+
+      <p>PHP does not support function overloading, nor is it possible to undefine or redefine previously-declared functions.</p>
+
+      <p><strong>Note:</strong> Function names are case-insensitive, though it is usually good form to call functions as they appear in their declaration.</p>
+
+      <p>Both variable number of arguments and default arguments are supported in functions. See also the function references for func_num_args(), func_get_arg(), and func_get_args() for more information.</p>
+
+      <p>It is possible to call recursive functions in PHP.</p>
+
+      <p><strong>Example #4 Recursive functions</strong></p>
+      <code>
+        <?php
+        function recursion($a)
+        {
+            if ($a < 20) {
+                echo "$a\n";
+                recursion($a + 1);
+            }
+        }
+        ?>
+      </code>
+      <p><strong>Note:</strong> Recursive function/method calls with over 100-200 recursion levels can smash the stack and cause a termination of the current script. Especially, infinite recursion is considered a programming error.</p>
       </section>
-      <section class="main-section">
-        <header>Types</header>
-        
+      <section class="main-section" id="Function_Arguments">
+        <header>Function Arguments</header>
       </section>
-      <section class="main-section">
-        <header>Variables</header>
-        
+      <section class="main-section" id="Returning_Values">
+        <header>Returning Values</header>
       </section>
-      <section class="main-section">
-        <header>Constants</header>
+      <section class="main-section" id="Variable_Functions">
+        <header>Variable Functions</header>
       </section>
-      <section class="main-section">
-        <header>Expressions</header>
+      <section class="main-section" id="Internal_Functions">
+        <header>Internal Functions</header>
+      </section>
+      <section class="main-section" id="Anonymous_Functions">
+        <header>Anonymous Functions</header>
       </section>
     </main>
   </div>
