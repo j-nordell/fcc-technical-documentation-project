@@ -28,7 +28,7 @@
         <header>User-defined Functions</header>
         <p>A function may be defined using syntax such as the following: </p>
 
-        <p><strong>Example #1 Pseudo code to demonstrate function uses</strong>
+        <p><strong>Example #1 Pseudo code to demonstrate function uses</strong></p>
           <pre>
             <code>
               &lt;?php
@@ -45,68 +45,73 @@
       <p>Function names follow the same rules as other labels in PHP. A valid function name starts with a letter or underscore, followed by any number of letters, numbers, or underscores. As a regular expression, it would be expressed thus: [a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*.</p>
 
       <p><strong>Tip</strong></p>
-      <p>See also the Userland Naming Guide.</p>
+      <ul>
+        <li><p>See also the Userland Naming Guide.</p></li>
 
-      <p>Functions need not be defined before they are referenced, except when a function is conditionally defined as shown in the two examples below.</p>
+        <li><p>Functions need not be defined before they are referenced, except when a function is conditionally defined as shown in the two examples below.</p></li>
 
-      <p>When a function is defined in a conditional manner such as the two examples shown. Its definition must be processed prior to being called.</p>
-
+        <li><p>When a function is defined in a conditional manner such as the two examples shown. Its definition must be processed prior to being called.</p></li>
+      </ul> 
       <p><strong>Example #2 Conditional functions</strong></p>
-      <code>
-        <?php
+      <pre>
+        <code>
+          &lt;?php
 
-        $makefoo = true;
+          $makefoo = true;
 
-        /* We can't call foo() from here 
-          since it doesn't exist yet,
-          but we can call bar() */
+          /* We can't call foo() from here 
+            since it doesn't exist yet,
+            but we can call bar() */
 
-        bar();
+          bar();
 
-        if ($makefoo) {
-          function foo()
-          {
-            echo "I don't exist until program execution reaches me.\n";
+          if ($makefoo) {
+            function foo()
+            {
+              echo "I don't exist until program execution reaches me.\n";
+            }
           }
-        }
 
-        /* Now we can safely call foo()
-          since $makefoo evaluated to true */
+          /* Now we can safely call foo()
+            since $makefoo evaluated to true */
 
-        if ($makefoo) foo();
+          if ($makefoo) foo();
 
-        function bar() 
-        {
-          echo "I exist immediately upon program start.\n";
-        }
-
-        ?>
-      </code>
-      <p><strong>Example #3 Functions within functions</strong></p>
-      <code>
-
-        <?php
-        function foo() 
-        {
           function bar() 
           {
-            echo "I don't exist until foo() is called.\n";
+            echo "I exist immediately upon program start.\n";
           }
-        }
 
-        /* We can't call bar() yet
-          since it doesn't exist. */
+          ?&gt;
+        </code>
+      </pre>
+      <p><strong>Example #3 Functions within functions</strong></p>
+      <pre>
+        <code>
 
-        foo();
+          &lt;?php
+          function foo() 
+          {
+            function bar() 
+            {
+              echo "I don't exist until foo() is called.\n";
+            }
+          }
 
-        /* Now we can call bar(),
-          foo()'s processing has
-          made it accessible. */
+          /* We can't call bar() yet
+            since it doesn't exist. */
 
-        bar();
+          foo();
 
-        ?>
-      </code>
+          /* Now we can call bar(),
+            foo()'s processing has
+            made it accessible. */
+
+          bar();
+
+          ?&gt;
+        </code>
+      </pre>
       <p>All functions and classes in PHP have the global scope - they can be called outside a function even if they were defined inside and vice versa.</p>
 
       <p>PHP does not support function overloading, nor is it possible to undefine or redefine previously-declared functions.</p>
@@ -118,35 +123,468 @@
       <p>It is possible to call recursive functions in PHP.</p>
 
       <p><strong>Example #4 Recursive functions</strong></p>
-      <code>
-        <?php
-        function recursion($a)
-        {
-            if ($a < 20) {
-                echo "$a\n";
-                recursion($a + 1);
-            }
-        }
-        ?>
-      </code>
+      <pre>
+        <code>
+          &lt;?php
+          function recursion($a)
+          {
+              if ($a < 20) {
+                  echo "$a\n";
+                  recursion($a + 1);
+              }
+          }
+          ?&gt;
+        </code>
+      </pre>
       <p><strong>Note:</strong> Recursive function/method calls with over 100-200 recursion levels can smash the stack and cause a termination of the current script. Especially, infinite recursion is considered a programming error.</p>
       </section>
       <section class="main-section" id="Function_Arguments">
         <header>Function Arguments</header>
+        <p>Information may be passed to functions via the argument list, which is a comma-delimited list of expressions. The arguments are evaluated from left to right.</p>
+
+        <p>PHP supports passing arguments by value (the default), passing by reference, and default argument values. Variable-length argument lists are also supported.</p>
+
+        <p><strong>Example #1 Passing arrays to functions</strong></p>
+        <pre>
+          <code>
+          &lt;?php
+          function takes_array($input)
+          {
+              echo "$input[0] + $input[1] = ", $input[0]+$input[1];
+          }
+          ?&gt;
+        </code>
+      </pre>
+        
       </section>
       <section class="main-section" id="Returning_Values">
         <header>Returning Values</header>
-      </section>
+        <p>Values are returned by using the optional return statement. Any type may be returned, including arrays and objects. This causes the function to end its execution immediately and pass control back to the line from which it was called. See return for more information.</p>
+
+        <code>
+        Note:
+
+        If the return is omitted the value NULL will be returned.
+        </code>
+
+        <h3>Use of return</h3>
+        <p><strong>Example #1 Use of return</strong></p>
+        <pre>
+          <code>
+          &lt;?php
+          function square($num)
+          {
+              return $num * $num;
+          }
+          echo square(4);   // outputs '16'.
+          ?&gt;
+        </code>
+      </pre>
+      <p>A function can not return multiple values, but similar results can be obtained by returning an array.</p>
+
+      <p><strong>Example #2 Returning an array to get multiple values</strong></p>
+      <pre>
+        <code>
+          &lt;?php
+          function small_numbers()
+          {
+              return array (0, 1, 2);
+          }
+          list ($zero, $one, $two) = small_numbers();
+          ?&gt;
+      </code>
+    </pre>
+    <p>To return a reference from a function, use the reference operator & in both the function declaration and when assigning the returned value to a variable:</p>
+
+    <p><strong>Example #3 Returning a reference from a function</strong></p>
+    <pre>
+      <code>
+        &lt;?php
+        function &returns_reference()
+        {
+            return $someref;
+        }
+
+        $newref =& returns_reference();
+        ?&gt;
+      </code>
+    </pre>
+    </section>
       <section class="main-section" id="Variable_Functions">
         <header>Variable Functions</header>
-      </section>
-      <section class="main-section" id="Internal_Functions">
-        <header>Internal Functions</header>
-      </section>
-      <section class="main-section" id="Anonymous_Functions">
-        <header>Anonymous Functions</header>
-      </section>
-    </main>
+          <ul>
+            <li><p>PHP supports the concept of variable functions. This means that if a variable name has parentheses appended to it, PHP will look for a function with the same name as whatever the variable evaluates to, and will attempt to execute it. Among other things, this can be used to implement callbacks, function tables, and so forth.</p></li>
+
+            <li><p>Variable functions won't work with language constructs such as echo, print, unset(), isset(), empty(), include, require and the like. Utilize wrapper functions to make use of any of these constructs as variable functions.</p></li>
+          </ul>  
+          <p><strong>Example #1 Variable function example</strong></p>
+          <pre>
+            <code>
+            &lt;?php
+            function foo() {
+                echo "In foo()<br />\n";
+            }
+
+            function bar($arg = '')
+            {
+                echo "In bar(); argument was '$arg'.<br />\n";
+            }
+
+            // This is a wrapper function around echo
+            function echoit($string)
+            {
+                echo $string;
+            }
+
+            $func = 'foo';
+            $func();        // This calls foo()
+
+            $func = 'bar';
+            $func('test');  // This calls bar()
+
+            $func = 'echoit';
+            $func('test');  // This calls echoit()
+            ?&gt;
+          </code>
+        </pre>
+        <p>Object methods can also be called with the variable functions syntax.</p>
+
+        <p><strong>Example #2 Variable method example</strong></p>
+        <pre>
+          <code>
+          &lt;?php
+          class Foo
+          {
+              function Variable()
+              {
+                  $name = 'Bar';
+                  $this->$name(); // This calls the Bar() method
+              }
+              
+              function Bar()
+              {
+                  echo "This is Bar";
+              }
+          }
+
+          $foo = new Foo();
+          $funcname = "Variable";
+          $foo->$funcname();  // This calls $foo->Variable()
+
+          ?&gt;
+        </code>
+      </pre>
+      <p>When calling static methods, the function call is stronger than the static property operator:</p>
+
+      <p><strong>Example #3 Variable method example with static properties</strong></p>
+      <pre>
+        <code>
+        &lt;?php
+        class Foo
+        {
+            static $variable = 'static property';
+            static function Variable()
+            {
+                echo 'Method Variable called';
+            }
+        }
+
+        echo Foo::$variable; // This prints 'static property'. It does need a $variable in this scope.
+        $variable = "Variable";
+        Foo::$variable();  // This calls $foo->Variable() reading $variable in this scope.
+
+        ?&gt;
+      </code>
+    </pre>
+    <p>As of PHP 5.4.0, you can call any callable stored in a variable.<p>
+
+    <p><strong>Example #4 Complex callables</strong></p>
+    <pre>
+      <code>
+      &lt;?php
+      class Foo
+      {
+          static function bar()
+          {
+              echo "bar\n";
+          }
+          function baz()
+          {
+              echo "baz\n";
+          }
+      }
+
+      $func = array("Foo", "bar");
+      $func(); // prints "bar"
+      $func = array(new Foo, "baz");
+      $func(); // prints "baz"
+      $func = "Foo::bar";
+      $func(); // prints "bar" as of PHP 7.0.0; prior, it raised a fatal error
+      ?&gt;
+    </code>
+  </pre>
+  </section>
+  <section class="main-section" id="Internal_Functions">
+    <header>Internal Functions</header>
+    <p>PHP comes standard with many functions and constructs. There are also functions that require specific PHP extensions compiled in, otherwise fatal "undefined function" errors will appear. For example, to use image functions such as imagecreatetruecolor(), PHP must be compiled with GD support. Or, to use mysqli_connect(), PHP must be compiled with MySQLi support. There are many core functions that are included in every version of PHP, such as the string and variable functions. A call to phpinfo() or get_loaded_extensions() will show which extensions are loaded into PHP. Also note that many extensions are enabled by default and that the PHP manual is split up by extension. See the configuration, installation, and individual extension chapters, for information on how to set up PHP.<p>
+
+    <p>Reading and understanding a function's prototype is explained within the manual section titled how to read a function definition. It's important to realize what a function returns or if a function works directly on a passed in value. For example, str_replace() will return the modified string while usort() works on the actual passed in variable itself. Each manual page also has specific information for each function like information on function parameters, behavior changes, return values for both success and failure, and availability information. Knowing these important (yet often subtle) differences is crucial for writing correct PHP code.</p>
+    <pre>
+      <code>
+        Note: If the parameters given to a function are not what it expects, such as passing an array where a string is expected, the return value of the function is undefined. In this case it will likely return NULL but this is just a convention, and cannot be relied upon.
+      </code>
+    </pre>
+  </section>
+  <section class="main-section" id="Anonymous_Functions">
+    <header>Anonymous Functions</header>
+    <p>Anonymous functions, also known as closures, allow the creation of functions which have no specified name. They are most useful as the value of callback parameters, but they have many other uses.</p>
+
+    <p>Anonymous functions are implemented using the Closure class.</p>
+
+    <p><strong>Example #1 Anonymous function example</strong></p>
+    <pre>
+      <code>
+      &lt;?php
+      echo preg_replace_callback('~-([a-z])~', function ($match) {
+          return strtoupper($match[1]);
+      }, 'hello-world');
+      // outputs helloWorld
+      ?&gt;
+    </code>
+  </pre>
+  <p>Closures can also be used as the values of variables; PHP automatically converts such expressions into instances of the Closure internal class. Assigning a closure to a variable uses the same syntax as any other assignment, including the trailing semicolon:</p>
+
+  <p><strong>Example #2 Anonymous function variable assignment example</strong></p>
+  <pre>
+    <code>
+
+      &lt;?php
+      $greet = function($name)
+      {
+          printf("Hello %s\r\n", $name);
+      };
+
+      $greet('World');
+      $greet('PHP');
+      ?&gt;
+    </code>
+  </pre>
+
+  <p>Closures may also inherit variables from the parent scope. Any such variables must be passed to the use language construct. From PHP 7.1, these variables must not include superglobals, $this, or variables with the same name as a parameter.</p>
+
+  <p><strong>Example #3 Inheriting variables from the parent scope</strong></p>
+  <pre>
+    <code>
+    &lt;?php
+    $message = 'hello';
+
+    // No "use"
+    $example = function () {
+        var_dump($message);
+    };
+    $example();
+
+    // Inherit $message
+    $example = function () use ($message) {
+        var_dump($message);
+    };
+    $example();
+
+    // Inherited variable's value is from when the function
+    // is defined, not when called
+    $message = 'world';
+    $example();
+
+    // Reset message
+    $message = 'hello';
+
+    // Inherit by-reference
+    $example = function () use (&$message) {
+        var_dump($message);
+    };
+    $example();
+
+    // The changed value in the parent scope
+    // is reflected inside the function call
+    $message = 'world';
+    $example();
+
+    // Closures can also accept regular arguments
+    $example = function ($arg) use ($message) {
+        var_dump($arg . ' ' . $message);
+    };
+    $example("hello");
+    ?&gt;
+  </code>
+</pre>
+<p>The above example will output something similar to:</p>
+
+<pre>
+  <code>
+
+    Notice: Undefined variable: message in /example.php on line 6
+    NULL
+    string(5) "hello"
+    string(5) "hello"
+    string(5) "hello"
+    string(5) "world"
+    string(11) "hello world"
+  </code>
+</pre>
+<p>Inheriting variables from the parent scope is not the same as using global variables. Global variables exist in the global scope, which is the same no matter what function is executing. The parent scope of a closure is the function in which the closure was declared (not necessarily the function it was called from). See the following example:</p>
+
+<p><strong>Example #4 Closures and scoping</strong></p>
+<pre>
+  <code>
+
+    &lt;?php
+    // A basic shopping cart which contains a list of added products
+    // and the quantity of each product. Includes a method which
+    // calculates the total price of the items in the cart using a
+    // closure as a callback.
+    class Cart
+    {
+        const PRICE_BUTTER  = 1.00;
+        const PRICE_MILK    = 3.00;
+        const PRICE_EGGS    = 6.95;
+
+        protected $products = array();
+        
+        public function add($product, $quantity)
+        {
+            $this->products[$product] = $quantity;
+        }
+        
+        public function getQuantity($product)
+        {
+            return isset($this->products[$product]) ? $this->products[$product] :
+                  FALSE;
+        }
+        
+        public function getTotal($tax)
+        {
+            $total = 0.00;
+            
+            $callback =
+                function ($quantity, $product) use ($tax, &$total)
+                {
+                    $pricePerItem = constant(__CLASS__ . "::PRICE_" .
+                        strtoupper($product));
+                    $total += ($pricePerItem * $quantity) * ($tax + 1.0);
+                };
+            
+            array_walk($this->products, $callback);
+            return round($total, 2);
+        }
+    }
+
+    $my_cart = new Cart;
+
+    // Add some items to the cart
+    $my_cart->add('butter', 1);
+    $my_cart->add('milk', 3);
+    $my_cart->add('eggs', 6);
+
+    // Print the total with a 5% sales tax.
+    print $my_cart->getTotal(0.05) . "\n";
+    // The result is 54.29
+    ?&gt;
+  </code>
+</pre>
+<p><strong>Example #5 Automatic binding of $this</strong></p>
+<pre>
+  <code>
+    &lt;?php
+
+    class Test
+    {
+        public function testing()
+        {
+            return function() {
+                var_dump($this);
+            };
+        }
+    }
+
+    $object = new Test;
+    $function = $object->testing();
+    $function();
+        
+    ?&gt;
+  </code>
+</pre>
+<p>The above example will output:</p>
+
+<pre>
+  <code>
+
+    object(Test)#1 (0) {
+    }
+  </code>
+</pre>
+<p>Output of the above example in PHP 5.3:</p>
+<pre>
+  <code>
+    Notice: Undefined variable: this in script.php on line 8
+    NULL
+  </code>
+</pre>
+<p>As of PHP 5.4.0, when declared in the context of a class, the current class is automatically bound to it, making $this available inside of the function's scope. If this automatic binding of the current class is not wanted, then static anonymous functions may be used instead.</p>
+
+<p>Static anonymous functions</p> 
+<p>As of PHP 5.4, anonymous functions may be declared statically. This prevents them from having the current class automatically bound to them. Objects may also not be bound to them at runtime.</p>
+
+<p><strong>Example #6 Attempting to use $this inside a static anonymous function</strong></p>
+<pre>
+  <code>
+    
+  &lt;?php
+
+  class Foo
+  {
+      function __construct()
+      {
+          $func = static function() {
+              var_dump($this);
+          };
+          $func();
+      }
+  };
+  new Foo();
+
+  ?&gt;
+  </code>
+</pre>
+<p>The above example will output:</p>
+<pre>
+  <code>
+    Notice: Undefined variable: this in %s on line %d
+    NULL
+  </code>
+</pre>
+<p><strong>Example #7 Attempting to bind an object to a static anonymous function</strong></p>
+<pre>
+  <code>
+    &lt;?php
+
+    $func = static function() {
+        // function body
+    };
+    $func = $func->bindTo(new StdClass);
+    $func();
+
+    ?&gt;
+  </code>
+</pre>
+<p>The above example will output:</p>
+<pre>
+  <code>
+      Warning: Cannot bind an instance to a static closure in %s on line %d
+  </code>
+</pre>
+
+  </section>
+  </main>
   </div>
   <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
 </body>
