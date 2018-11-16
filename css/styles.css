@@ -1,3 +1,27 @@
 body {
   background-color: #EEE;
+  width: 100%;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: minmax(200px, 250px) 4fr;
+  grid-template-rows: 1fr;
+  word-wrap: normal;
+}
+
+li {
+  list-style: none;
+}
+
+nav {
+  position: fixed;
+}
+
+@media screen and (min-width: 1200px) {
+  .wrapper {
+    display: grid;
+    grid-template-rows: minmax(100px, 200px) 4fr;
+    grid-template-columns: 1fr;
+  }
 }
